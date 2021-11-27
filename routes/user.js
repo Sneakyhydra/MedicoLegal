@@ -25,6 +25,9 @@ router.post(
       'user_password',
       'Please enter a password with 6 or more characters'
     ).isLength({ min: 6 }), // Check the password
+    check('name', 'Name is required').not().isEmpty(),
+    check('designation', 'Designation is required').not().isEmpty(),
+    check('posting_place', 'Posting place is required').not().isEmpty(),
   ],
   async (req, res) => {
     // Check for errors
@@ -35,7 +38,8 @@ router.post(
     }
 
     // Extract info from the body
-    let { user_email, user_password } = req.body;
+    let { user_email, user_password, name, designation, posting_place } =
+      req.body;
 
     try {
       // Check if user exists
@@ -72,7 +76,9 @@ router.post(
         payload.id = user_id;
 
         // Add user details in the DB
-        await promisePool.query();
+        await promisePool.query(
+          `INSERT INTO user_details (user_id, name, designation, posting_place) VALUES (${user_id}, "${name}", "${designation}", "${posting_place}")`
+        );
 
         // Create a token
         const token = jwt.sign(payload, config.get('jwtSecret'), {
@@ -82,12 +88,13 @@ router.post(
         // Create an httpOnly cookie
         res.cookie('token', token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV !== 'development',
+          // secure: process.env.NODE_ENV !== 'development',
+          secure: false,
           maxAge: 6 * 60 * 60 * 1000,
         });
 
         // Send success message to the client
-        res.send('Logged in');
+        res.send('Registered');
       }
     } catch (err) {
       // Catch errors

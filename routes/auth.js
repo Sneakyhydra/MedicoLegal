@@ -26,6 +26,18 @@ router.get('/', auth, async (req, res) => {
   const user_id = req.user_id;
 
   try {
+    // Get user from database
+    const [rows] = await promisePool.query(
+      `SELECT * from user_details WHERE user_id='${user_id}'`
+    );
+
+    const user = {
+      name: rows[0].name,
+      designation: rows[0].designation,
+      posting_place: rows[0].posting_place,
+    };
+
+    res.send(user);
   } catch (err) {
     // Catch errors
     throw err;
@@ -95,7 +107,7 @@ router.post(
           // Store the token in an httpOnly cookie
           res.cookie('token', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV !== 'development',
+            secure: false,
             maxAge: 6 * 60 * 60 * 1000,
           });
 

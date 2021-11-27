@@ -2,6 +2,7 @@
 const express = require('express'); // Create server
 const cors = require('cors'); // Cors middleware
 const path = require('path');
+const cookieParser = require('cookie-parser'); // Parse cookies
 
 // Init app
 const app = express();
@@ -12,6 +13,7 @@ const port = process.env.PORT || 5000;
 // Init middleware
 app.use(express.json({ extended: false }));
 app.use(cors());
+app.use(cookieParser());
 
 // Define routes
 app.use('/api/auth', require('./routes/auth'));
