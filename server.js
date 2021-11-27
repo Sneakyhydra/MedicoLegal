@@ -1,7 +1,6 @@
 // Imports
 const express = require('express'); // Create server
 const cors = require('cors'); // Cors middleware
-const cookieParser = require('cookie-parser'); // Cookies
 const path = require('path');
 
 // Init app
@@ -13,10 +12,10 @@ const port = process.env.PORT || 5000;
 // Init middleware
 app.use(express.json({ extended: false }));
 app.use(cors());
-app.use(cookieParser());
 
 // Define routes
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/user', require('./routes/user'));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {

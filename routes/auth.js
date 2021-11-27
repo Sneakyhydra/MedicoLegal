@@ -54,25 +54,55 @@ router.post(
     const password = req.body.user_password;
 
     try {
-      // Store user_id in payload for token
-      const payload = {
-        id: user_id,
-      };
+      // Check if the user exists
+      const [existence] = await promisePool.query(
+        `SELECT EXISTS(SELECT * from logins WHERE user_email= "${userEmail}" ) 'EXISTS' FROM dual`
+      );
 
-      // Create a token
-      const token = jwt.sign(payload, config.get('jwtSecret'), {
-        expiresIn: 21600,
-      });
+      // Extract the bool
+      const result = existence[0].EXISTS;
 
-      // Store the token in an httpOnly cookie
-      res.cookie('token', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV !== 'development',
-        maxAge: 6 * 60 * 60 * 1000,
-      });
+      // Check if result is false
+      if (!result) {
+        // User doesn't exist
+        return res.status(400).json({ msg: 'Invalid Credentials' });
+      } else {
+        // Get user details from DB
+        const [rows] = await promisePool.query(
+          `SELECT * from logins WHERE user_email='${userEmail}'`
+        );
 
-      // Send success message to client
-      res.send('Logged in');
+        // Extract the user_id and user_password from the rows
+        const { user_id, user_password } = rows[0];
+
+        // Check the password
+        const isMatch = await bcrypt.compare(password, user_password);
+
+        if (!isMatch) {
+          // Password doesn't match
+          return res.status(400).json({ msg: 'Invalid Credentials' });
+        } else {
+          // Store user_id in payload for token
+          const payload = {
+            id: user_id,
+          };
+
+          // Create a token
+          const token = jwt.sign(payload, config.get('jwtSecret'), {
+            expiresIn: 21600,
+          });
+
+          // Store the token in an httpOnly cookie
+          res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== 'development',
+            maxAge: 6 * 60 * 60 * 1000,
+          });
+
+          // Send success message to client
+          res.send('Logged in');
+        }
+      }
     } catch (err) {
       // Catch errors
       throw err;
