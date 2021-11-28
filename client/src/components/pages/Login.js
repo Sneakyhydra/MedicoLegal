@@ -62,8 +62,8 @@ const Login = () => {
   };
 
   return (
-    <div className='row'>
-      <form className='col s12'>
+    <form className='col s12'>
+      <div className='form-container'>
         <div className='input-field col s12'>
           <label htmlFor='email'>Email</label>
           <br />
@@ -110,8 +110,8 @@ const Login = () => {
         <p>
           New user?<NavLink to='/register'>Register</NavLink>
         </p>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 };
 

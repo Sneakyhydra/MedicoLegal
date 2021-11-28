@@ -79,8 +79,8 @@ const Register = () => {
   };
 
   return (
-    <div className='row'>
-      <form className='col s12'>
+    <form className='col s12'>
+      <div className='form-container'>
         <div className='input-field col s12'>
           <label htmlFor='name'>Name</label>
           <br />
@@ -170,8 +170,8 @@ const Register = () => {
         <p>
           Already a user?<NavLink to='/'>Login</NavLink>
         </p>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 };
 
