@@ -1,20 +1,14 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import AlertContext from '../../../context/alert/alertContext';
+import Injury from './Injury';
+import axios from 'axios';
+
+axios.defaults.withCredentials = true;
 
 const InjuryForm = () => {
   const alertContext = useContext(AlertContext);
   const { setAlert } = alertContext;
-
-  // useEffect(() => {
-  //   if (error === 'Invalid Credentials') {
-  //     setAlert(error, 'danger');
-  //   } else if (error === 'User already exists') {
-  //     setAlert(error, 'danger');
-  //   }
-
-  //   clearErrors();
-  //   // eslint-disable-next-line
-  // }, [error, token]);
+  const [add, setAdd] = useState(false);
 
   const [report, setReport] = useState({
     p_name: '',
@@ -57,22 +51,92 @@ const InjuryForm = () => {
   });
 
   const onChange = (e) => {
-    // setUser({ ...user, [e.target.name]: e.target.value });
+    setReport({ ...report, [e.target.name]: e.target.value });
+  };
+
+  const { type, size, location, object, nature, duration } = injury;
+
+  const addInjury = () => {
+    if (
+      type === '' ||
+      size === '' ||
+      location === '' ||
+      object === '' ||
+      nature === '' ||
+      duration === ''
+    ) {
+      setAlert('Please enter all fields', 'danger');
+    } else {
+      setInjuries([...injuries, { ...injury }]);
+      setInjury({
+        type: '',
+        size: '',
+        location: '',
+        object: '',
+        nature: '',
+        duration: '',
+      });
+      setAdd(false);
+    }
+  };
+
+  const onChangeInjury = (e) => {
+    setInjury({ ...injury, [e.target.name]: e.target.value });
+  };
+
+  const deleteInjury = (idx) => {
+    setInjuries([...injuries.slice(0, idx), ...injuries.slice(idx + 1)]);
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    // setLoginProgress(true);
 
-    // if (email === '' || password === '') {
-    //   setAlert('Please enter all fields', 'danger');
-    //   setLoginProgress(false);
-    // } else {
-    //   await login({
-    //     user_email: email,
-    //     user_password: password,
-    //   });
-    // }
+    if (
+      p_name === '' ||
+      swo === '' ||
+      p_age === '' ||
+      p_address === '' ||
+      brought_by === '' ||
+      id_mark === '' ||
+      history === '' ||
+      opinion === '' ||
+      place === '' ||
+      rep_date === '' ||
+      rep_time === '' ||
+      rep_type === '' ||
+      injuries.length === 0
+    ) {
+      setAlert('Please enter all fields', 'danger');
+    } else {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const formData = {
+        p_name,
+        swo,
+        p_age,
+        p_address,
+        brought_by,
+        id_mark,
+        history,
+        opinion,
+        place,
+        rep_date,
+        rep_time,
+        rep_type,
+        injuries,
+      };
+
+      try {
+        // Make a post request at localhost:5000/api/user/register
+        await axios.post('api/forms/injury', formData, config);
+      } catch (err) {
+        console.log(err);
+      }
+    }
   };
 
   return (
@@ -177,6 +241,144 @@ const InjuryForm = () => {
             required
           />
         </div>
+
+        <br />
+        <h3>Injuries</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Type of Injury</th>
+              <th>Size</th>
+              <th>Location</th>
+              <th>Object</th>
+              <th>Nature</th>
+              <th>Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            {injuries.map((injury, idx) => {
+              return (
+                <Injury
+                  injury={injury}
+                  key={idx}
+                  idx={idx}
+                  deleteInjury={deleteInjury}
+                />
+              );
+            })}
+          </tbody>
+        </table>
+        <button type='button' onClick={() => setAdd(true)} disabled={add}>
+          Add
+        </button>
+        {add ? (
+          <div>
+            <div className='input-field col s12'>
+              <label htmlFor='type'>Type of Injury</label>
+              <br />
+              <input
+                id='type'
+                name='type'
+                type='text'
+                className='validate'
+                value={type}
+                onChange={onChangeInjury}
+                required
+              />
+            </div>
+
+            <div className='input-field col s12'>
+              <label htmlFor='size'>Size</label>
+              <br />
+              <input
+                id='size'
+                name='size'
+                type='text'
+                className='validate'
+                value={size}
+                onChange={onChangeInjury}
+                required
+              />
+            </div>
+
+            <div className='input-field col s12'>
+              <label htmlFor='location'>Location</label>
+              <br />
+              <input
+                id='location'
+                name='location'
+                type='text'
+                className='validate'
+                value={location}
+                onChange={onChangeInjury}
+                required
+              />
+            </div>
+
+            <div className='input-field col s12'>
+              <label htmlFor='object'>Object</label>
+              <br />
+              <input
+                id='object'
+                name='object'
+                type='text'
+                className='validate'
+                value={object}
+                onChange={onChangeInjury}
+                required
+              />
+            </div>
+
+            <div className='input-field col s12'>
+              <label htmlFor='nature'>Nature</label>
+              <br />
+              <input
+                id='nature'
+                name='nature'
+                type='text'
+                className='validate'
+                value={nature}
+                onChange={onChangeInjury}
+                required
+              />
+            </div>
+
+            <div className='input-field col s12'>
+              <label htmlFor='duration'>Duration</label>
+              <br />
+              <input
+                id='duration'
+                name='duration'
+                type='text'
+                className='validate'
+                value={duration}
+                onChange={onChangeInjury}
+                required
+              />
+            </div>
+            <button type='button' onClick={addInjury}>
+              Save
+            </button>
+            <button
+              type='button'
+              onClick={() => {
+                setAdd(false);
+                setInjury({
+                  type: '',
+                  size: '',
+                  location: '',
+                  object: '',
+                  nature: '',
+                  duration: '',
+                });
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        ) : (
+          ''
+        )}
 
         <br />
         <h3>Report Details</h3>
