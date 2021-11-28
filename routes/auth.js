@@ -151,9 +151,7 @@ router.get('/check', async (req, res) => {
     const decoded = jwt.verify(token, config.get('jwtSecret'));
 
     res.send('Valid');
-  } catch (err) {
-    console.log('Invalid');
-  }
+  } catch (err) {}
 });
 
 module.exports = router;
