@@ -47,7 +47,8 @@ const Login = () => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async (e) => {
+    e.preventDefault();
     setLoginProgress(true);
 
     if (email === '' || password === '') {
@@ -62,7 +63,7 @@ const Login = () => {
   };
 
   return (
-    <form className='col s12 center'>
+    <form className='col s12 center' onSubmit={onSubmit}>
       <div className='form-container'>
         <div className='input-field col s12'>
           <label htmlFor='email'>Email</label>
@@ -95,7 +96,6 @@ const Login = () => {
         <button
           type='submit'
           value='Login'
-          onClick={onSubmit}
           style={{
             borderRadius: '2em',
             marginTop: '2em',
