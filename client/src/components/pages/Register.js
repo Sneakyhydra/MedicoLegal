@@ -79,7 +79,7 @@ const Register = () => {
   };
 
   return (
-    <form className='col s12'>
+    <form className='col s12 center'>
       <div className='form-container'>
         <div className='input-field col s12'>
           <label htmlFor='name'>Name</label>
