@@ -15,7 +15,18 @@ const Dashboard = () => {
     await logout();
   };
 
-  return <button onClick={onLogout}>Logout</button>;
+  return (
+    <button
+      onClick={onLogout}
+      style={{
+        borderRadius: '2em',
+        marginTop: '2em',
+        width: '10em',
+      }}
+    >
+      Logout
+    </button>
+  );
 };
 
 export default Dashboard;
