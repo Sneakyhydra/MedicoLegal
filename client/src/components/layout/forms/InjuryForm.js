@@ -5,7 +5,7 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 
-const InjuryForm = () => {
+const InjuryForm = ({ setShowInjury }) => {
   const alertContext = useContext(AlertContext);
   const { setAlert } = alertContext;
   const [add, setAdd] = useState(false);
@@ -101,18 +101,28 @@ const InjuryForm = () => {
       history === '' ||
       opinion === '' ||
       place === '' ||
-      rep_date === '' ||
-      rep_time === '' ||
       rep_type === '' ||
       injuries.length === 0
     ) {
       setAlert('Please enter all fields', 'danger');
+    } else if (rep_date !== '' && rep_time === '') {
+      setAlert('Both date and time should be entered or left empty', 'danger');
+    } else if (rep_date === '' && rep_time !== '') {
+      setAlert('Both date and time should be entered or left empty', 'danger');
     } else {
       const config = {
         headers: {
           'Content-Type': 'application/json',
         },
       };
+
+      if (rep_date === '' && rep_time === '') {
+        let date, time;
+        date = new Date();
+        time = date.toLocaleTimeString();
+        date = date.toISOString().slice(0, 10);
+        setReport({ ...report, rep_date: date, rep_time: time });
+      }
 
       const formData = {
         p_name,
@@ -133,6 +143,8 @@ const InjuryForm = () => {
       try {
         // Make a post request at localhost:5000/api/user/register
         await axios.post('api/forms/injury', formData, config);
+
+        setShowInjury(false);
       } catch (err) {
         console.log(err);
       }
@@ -421,7 +433,6 @@ const InjuryForm = () => {
             className='validate'
             value={rep_date}
             onChange={onChange}
-            required
           />
         </div>
 
@@ -435,7 +446,6 @@ const InjuryForm = () => {
             className='validate'
             value={rep_time}
             onChange={onChange}
-            required
           />
         </div>
 
@@ -449,6 +459,9 @@ const InjuryForm = () => {
           }}
         >
           Submit
+        </button>
+        <button type='button' onClick={() => setShowInjury(false)}>
+          Cancel
         </button>
       </div>
     </form>

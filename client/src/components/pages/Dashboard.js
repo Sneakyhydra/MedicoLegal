@@ -1,13 +1,17 @@
 // Imports
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import AuthContext from '../../context/auth/authContext';
 import InjuryForm from '../layout/forms/InjuryForm';
+import Patients from '../layout/patients/Patients';
 
 import './Dashboard.css';
 
 const Dashboard = () => {
   const authContext = useContext(AuthContext);
   const { logout, validate, user, loadUser } = authContext;
+
+  const [showInjury, setShowInjury] = useState(false);
+  const [showReports, setShowReports] = useState(false);
 
   useEffect(() => {
     validate();
@@ -51,7 +55,33 @@ const Dashboard = () => {
       </div>
       <br />
 
-      <InjuryForm />
+      {!showInjury && !showReports && (
+        <div>
+          <button onClick={() => setShowInjury(true)}>Injury Form</button>
+        </div>
+      )}
+      {showInjury && <InjuryForm setShowInjury={setShowInjury} />}
+
+      {!showReports && !showInjury && (
+        <div>
+          <button onClick={() => setShowReports(true)}>Reports</button>
+        </div>
+      )}
+      {showReports && (
+        <Patients setShowReports={setShowReports} showReports={showReports} />
+      )}
+
+      {!showReports && !showInjury && (
+        <div>
+          <button
+            onClick={() =>
+              window.open('http://localhost:5000/api/reports/injurytemplate')
+            }
+          >
+            Download Template
+          </button>
+        </div>
+      )}
     </div>
   );
 };

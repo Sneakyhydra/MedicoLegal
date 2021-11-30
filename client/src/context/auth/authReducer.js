@@ -54,6 +54,18 @@ const authReducer = (state, action) => {
         token: false,
       };
 
+    case actions.LOAD_INJURY_SUCCESS:
+      return {
+        ...state,
+        injuryReports: action.payload,
+      };
+
+    case actions.LOAD_INJURY_FAIL:
+      return {
+        ...state,
+        injuryReports: null,
+      };
+
     default:
       return state;
   }

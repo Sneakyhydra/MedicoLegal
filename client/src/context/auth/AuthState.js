@@ -14,6 +14,7 @@ const AuthState = (props) => {
     user: null,
     error: null,
     token: false,
+    injuryReports: null,
   };
 
   // Init Reducer
@@ -132,6 +133,20 @@ const AuthState = (props) => {
     });
   };
 
+  const loadInjuryReports = async () => {
+    try {
+      const res = await axios.get('/api/forms/injury');
+      dispatch({
+        type: actions.LOAD_INJURY_SUCCESS,
+        payload: res.data,
+      });
+    } catch (err) {
+      dispatch({
+        type: actions.LOAD_INJURY_FAIL,
+      });
+    }
+  };
+
   return (
     <AuthContext.Provider
       // Provide these values to all components wrapped in AuthContext in App.js
@@ -139,12 +154,14 @@ const AuthState = (props) => {
         user: state.user,
         error: state.error,
         token: state.token,
+        injuryReports: state.injuryReports,
         login,
         loadUser,
         logout,
         clearErrors,
         register,
         validate,
+        loadInjuryReports,
       }}
     >
       {props.children}

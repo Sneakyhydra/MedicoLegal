@@ -18,6 +18,8 @@ app.use(cookieParser());
 // Define routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/user', require('./routes/user'));
+app.use('/api/forms', require('./routes/forms'));
+app.use('/api/reports', require('./routes/reports'));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
