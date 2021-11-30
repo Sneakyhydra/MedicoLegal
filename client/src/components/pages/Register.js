@@ -4,6 +4,8 @@ import AuthContext from '../../context/auth/authContext';
 import AlertContext from '../../context/alert/alertContext';
 import { useNavigate } from 'react-router';
 import { NavLink } from 'react-router-dom';
+import styles from './LoginReg.module.css';
+import M from 'materialize-css/dist/js/materialize.min.js';
 
 const Register = () => {
   const authContext = useContext(AuthContext);
@@ -16,6 +18,8 @@ const Register = () => {
 
   useEffect(() => {
     validate();
+    M.AutoInit();
+    M.updateTextFields();
     return () => {
       setLoginProgress(false);
     };
@@ -52,7 +56,8 @@ const Register = () => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async (e) => {
+    e.preventDefault();
     setLoginProgress(true);
 
     if (
@@ -79,88 +84,84 @@ const Register = () => {
   };
 
   return (
-    <form className='col s12 center'>
-      <div className='form-container'>
-        <div className='input-field col s12'>
-          <label htmlFor='name'>Name</label>
-          <br />
-          <input
-            id='name'
-            name='name'
-            type='text'
-            className='validate'
-            value={name}
-            onChange={onChange}
-            required
-          />
+    <div className={styles.container}>
+      <form className={'col s12 ' + styles.form} onSubmit={onSubmit}>
+        <div className='row'>
+          <div className='input-field col s12'>
+            <input
+              name='name'
+              id='name'
+              type='text'
+              className='validate'
+              value={name}
+              onChange={onChange}
+              required
+            />
+            <label htmlFor='name'>Name</label>
+          </div>
         </div>
-
-        <div className='input-field col s12'>
-          <label htmlFor='email'>Email</label>
-          <br />
-          <input
-            id='email'
-            name='email'
-            type='text'
-            className='validate'
-            value={email}
-            onChange={onChange}
-            required
-          />
+        <div className='row'>
+          <div className='input-field col s12'>
+            <input
+              placeholder='example@gmail.com'
+              name='email'
+              id='email'
+              type='text'
+              className='validate'
+              value={email}
+              onChange={onChange}
+              required
+            />
+            <label htmlFor='email'>Email</label>
+          </div>
         </div>
-
-        <div className='input-field col s12'>
-          <label htmlFor='designation'>Designation</label>
-          <br />
-          <input
-            id='designation'
-            name='designation'
-            type='text'
-            className='validate'
-            value={designation}
-            onChange={onChange}
-            required
-          />
+        <div className='row'>
+          <div className='input-field col s12'>
+            <input
+              name='designation'
+              id='designation'
+              type='text'
+              className='validate'
+              value={designation}
+              onChange={onChange}
+              required
+            />
+            <label htmlFor='designation'>Designation</label>
+          </div>
         </div>
-
-        <div className='input-field col s12'>
-          <label htmlFor='posting_place'>Posting Place</label>
-          <br />
-          <input
-            id='posting_place'
-            name='posting_place'
-            type='text'
-            className='validate'
-            value={posting_place}
-            onChange={onChange}
-            required
-          />
+        <div className='row'>
+          <div className='input-field col s12'>
+            <input
+              name='posting_place'
+              id='posting_place'
+              type='text'
+              className='validate'
+              value={posting_place}
+              onChange={onChange}
+              required
+            />
+            <label htmlFor='posting_place'>Posting Place</label>
+          </div>
         </div>
-
-        <div className='input-field col s12'>
-          <label htmlFor='password'>Password</label>
-          <br />
-          <input
-            id='password'
-            name='password'
-            type='password'
-            className='validate'
-            value={password}
-            onChange={onChange}
-            minLength='6'
-            required
-          />
+        <div className='row'>
+          <div className='input-field col s12'>
+            <input
+              name='password'
+              id='password'
+              type='password'
+              className='validate'
+              value={password}
+              onChange={onChange}
+              required
+            />
+            <label htmlFor='password'>Password</label>
+          </div>
         </div>
 
         <button
           type='submit'
-          value='register'
-          onClick={onSubmit}
-          style={{
-            borderRadius: '2em',
-            marginTop: '2em',
-            width: '10em',
-          }}
+          className={'waves-effect waves-light btn ' + styles.button}
+          value='Register'
           disabled={loginProgress}
         >
           Register
@@ -168,10 +169,10 @@ const Register = () => {
 
         <br />
         <p>
-          Already a user?<NavLink to='/'>Login</NavLink>
+          Already a user? <NavLink to='/'>Login</NavLink>
         </p>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 

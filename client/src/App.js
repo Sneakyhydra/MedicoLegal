@@ -12,6 +12,7 @@ import AuthState from './context/auth/AuthState';
 import AlertState from './context/alert/AlertState';
 
 import './App.css';
+import 'materialize-css/dist/css/materialize.min.css';
 
 const App = () => {
   return (

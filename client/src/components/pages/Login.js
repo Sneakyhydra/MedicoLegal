@@ -4,6 +4,8 @@ import AuthContext from '../../context/auth/authContext';
 import AlertContext from '../../context/alert/alertContext';
 import { useNavigate } from 'react-router';
 import { NavLink } from 'react-router-dom';
+import styles from './LoginReg.module.css';
+import M from 'materialize-css/dist/js/materialize.min.js';
 
 const Login = () => {
   const authContext = useContext(AuthContext);
@@ -16,6 +18,8 @@ const Login = () => {
 
   useEffect(() => {
     validate();
+    M.AutoInit();
+    M.updateTextFields();
     return () => {
       setLoginProgress(false);
     };
@@ -63,44 +67,42 @@ const Login = () => {
   };
 
   return (
-    <form className='col s12 center' onSubmit={onSubmit}>
-      <div className='form-container'>
-        <div className='input-field col s12'>
-          <label htmlFor='email'>Email</label>
-          <br />
-          <input
-            id='email'
-            name='email'
-            type='text'
-            className='validate'
-            value={email}
-            onChange={onChange}
-            required
-          />
+    <div className={styles.container}>
+      <form className={'col s12 ' + styles.form} onSubmit={onSubmit}>
+        <div className='row'>
+          <div className='input-field col s12'>
+            <input
+              placeholder='example@gmail.com'
+              name='email'
+              id='email'
+              type='text'
+              className='validate'
+              value={email}
+              onChange={onChange}
+              required
+            />
+            <label htmlFor='email'>Email</label>
+          </div>
         </div>
-
-        <div className='input-field col s12'>
-          <label htmlFor='password'>Password</label>
-          <br />
-          <input
-            id='password'
-            name='password'
-            type='password'
-            className='validate'
-            value={password}
-            onChange={onChange}
-            required
-          />
+        <div className='row'>
+          <div className='input-field col s12'>
+            <input
+              name='password'
+              id='password'
+              type='password'
+              className='validate'
+              value={password}
+              onChange={onChange}
+              required
+            />
+            <label htmlFor='password'>Password</label>
+          </div>
         </div>
 
         <button
           type='submit'
+          className={'waves-effect waves-light btn ' + styles.button}
           value='Login'
-          style={{
-            borderRadius: '2em',
-            marginTop: '2em',
-            width: '10em',
-          }}
           disabled={loginProgress}
         >
           Login
@@ -108,10 +110,10 @@ const Login = () => {
 
         <br />
         <p>
-          New user?<NavLink to='/register'>Register</NavLink>
+          New user? <NavLink to='/register'>Register</NavLink>
         </p>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 
