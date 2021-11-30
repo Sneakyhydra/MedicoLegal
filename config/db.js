@@ -9,6 +9,7 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 4,
   queueLimit: 0,
+  dateStrings: 'date',
 });
 
 // Get a Promise wrapped instance of that pool

@@ -117,36 +117,62 @@ const InjuryForm = ({ setShowInjury }) => {
       };
 
       if (rep_date === '' && rep_time === '') {
-        let date, time;
+        let date;
         date = new Date();
-        time = date.toLocaleTimeString();
-        date = date.toISOString().slice(0, 10);
-        setReport({ ...report, rep_date: date, rep_time: time });
-      }
+        let time = date.toLocaleTimeString();
+        date = date.toLocaleDateString();
+        date =
+          date.slice(6, 10) + '-' + date.slice(0, 2) + '-' + date.slice(3, 5);
 
-      const formData = {
-        p_name,
-        swo,
-        p_age,
-        p_address,
-        brought_by,
-        id_mark,
-        history,
-        opinion,
-        place,
-        rep_date,
-        rep_time,
-        rep_type,
-        injuries,
-      };
+        const formData = {
+          p_name,
+          swo,
+          p_age,
+          p_address,
+          brought_by,
+          id_mark,
+          history,
+          opinion,
+          place,
+          rep_date: date,
+          rep_time: time,
+          rep_type,
+          injuries,
+        };
 
-      try {
-        // Make a post request at localhost:5000/api/user/register
-        await axios.post('api/forms/injury', formData, config);
+        try {
+          // Make a post request at localhost:5000/api/user/register
+          await axios.post('api/forms/injury', formData, config);
 
-        setShowInjury(false);
-      } catch (err) {
-        console.log(err);
+          setShowInjury(false);
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        const formData = {
+          p_name,
+          swo,
+          p_age,
+          p_address,
+          brought_by,
+          id_mark,
+          history,
+          opinion,
+          place,
+          rep_date,
+          rep_time,
+          rep_type,
+          injuries,
+        };
+
+        try {
+          // Make a post request at localhost:5000/api/user/register
+          await axios.post('api/forms/injury', formData, config);
+
+          setShowInjury(false);
+        } catch (err) {
+          console.log(err);
+        }
       }
     }
   };

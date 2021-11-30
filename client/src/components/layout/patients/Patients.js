@@ -52,7 +52,7 @@ const Patients = ({ setShowReports, showReports }) => {
                 <td>{idx + 1}</td>
                 <td>{injury.p_name}</td>
                 <td>{injury.swo}</td>
-                <td>{injury.rep_date.slice(0, 10)}</td>
+                <td>{injury.rep_date}</td>
                 <td>{injury.rep_time}</td>
                 <td>
                   <button
@@ -99,7 +99,7 @@ const Patients = ({ setShowReports, showReports }) => {
           <p>History: {injuryReports[pDetailsId].history}</p>
           <p>Opinion: {injuryReports[pDetailsId].opinion}</p>
           <p>Place: {injuryReports[pDetailsId].place}</p>
-          <p>Date: {injuryReports[pDetailsId].rep_date.slice(0, 10)}</p>
+          <p>Date: {injuryReports[pDetailsId].rep_date}</p>
           <p>Time: {injuryReports[pDetailsId].rep_time}</p>
           <p>
             Report Creation Date:{' '}

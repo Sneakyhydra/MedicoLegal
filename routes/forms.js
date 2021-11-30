@@ -69,6 +69,9 @@ router.post(
       ' ' +
       rep_time;
 
+    console.log(rep_date);
+    console.log(rep_time);
+
     await promisePool.query(
       `INSERT INTO reports (user_id, p_name, swo, p_age, p_address, brought_by, id_mark, history, opinion, place, rep_date, rep_time, rep_type, createDateTime) VALUES (${user_id}, "${p_name}","${swo}",${p_age},"${p_address}","${brought_by}","${id_mark}","${history}","${opinion}","${place}","${rep_date}","${rep_time}","${rep_type}", "${rep_date_time}")`
     );

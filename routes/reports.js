@@ -61,8 +61,6 @@ router.get('/downloadinjury/:id', auth, async (req, res) => {
       rep_time,
     } = report[0];
 
-    rep_date = rep_date.toISOString().slice(0, 10);
-
     const content = fs.readFileSync(
       path.join(__dirname, '../template.docx'),
       'binary'
