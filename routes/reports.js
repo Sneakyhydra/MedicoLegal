@@ -109,7 +109,7 @@ router.get('/downloadinjury/:id', auth, async (req, res) => {
 
         console.log('File is deleted.');
       });
-    }, 60000);
+    }, 5000);
   } catch (err) {
     console.log(err);
   }
